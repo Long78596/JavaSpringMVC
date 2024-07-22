@@ -2,6 +2,10 @@ package vn.hoidanit.laptopshop.domain;
 
 import java.util.List;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,19 +23,43 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    
-    
-    private String email;
+
+    @NotNull
     private String password;
+    @NotNull
     private String fullName;
     private String phone;
     private String address;
     private String avatar;
+    
+     @NotNull
+   private String email;
+  
+    
     @ManyToOne
     @JoinColumn(name="role_id")
     Role role;
    @OneToMany(mappedBy = "user")
    private List<Order> order;
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
+
+   
+    public Role getRole() {
+    return role;
+}
+
+public void setRole(Role role) {
+    this.role = role;
+}
+
+public List<Order> getOrder() {
+    return order;
+}
+
+public void setOrder(List<Order> order) {
+    this.order = order;
+}
 
     public long getId() {
         return id;
@@ -90,6 +119,14 @@ public class User {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+    
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     @Override
